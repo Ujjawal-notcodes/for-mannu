@@ -12,7 +12,6 @@
             overflow: hidden; text-align: center;
         }
 
-        /* Floating Polaroid Photos */
         .floating-photo {
             position: absolute; width: 80px; height: 100px; background: white;
             padding: 5px 5px 15px 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -30,7 +29,6 @@
             100% { transform: translate(0, 0) rotate(0deg); }
         }
 
-        /* 10 Unique Positions */
         .p1 { top: 5%; left: 5%; animation-duration: 22s; }
         .p2 { top: 15%; left: 45%; animation-duration: 28s; animation-delay: -2s; }
         .p3 { top: 5%; right: 5%; animation-duration: 24s; animation-delay: -5s; }
@@ -43,15 +41,13 @@
         .p10 { top: 60%; left: 15%; animation-duration: 31s; animation-delay: -8s; }
 
         .container {
-            z-index: 10; 
-            /* SUPER LOW TRANSPARENCY + BLUR */
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            
+            z-index: 20; /* Increased to ensure it stays above photos */
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 20px; border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
             width: 85%; max-width: 320px;
         }
 
@@ -60,28 +56,22 @@
             border-radius: 50%; margin-bottom: 10px; object-fit: cover;
         }
 
-        /* Added text shadow so Mannu can read the text clearly over photos */
         h1 { color: #ff4d6d; font-size: 1.3rem; margin-bottom: 15px; text-shadow: 1px 1px 2px white; }
 
-        .buttons { display: flex; gap: 10px; justify-content: center; align-items: center; min-height: 120px; }
+        .buttons { display: flex; gap: 10px; justify-content: center; align-items: center; min-height: 120px; position: relative; z-index: 30; }
 
-        #yesBtn { background-color: #ff4d6d; color: white; border: none; padding: 10px 20px; font-size: 1rem; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        #noBtn { background-color: #adb5bd; color: white; border: none; padding: 8px 18px; font-size: 0.9rem; border-radius: 25px; cursor: pointer; transition: 0.1s; position: relative; }
+        #yesBtn { background-color: #ff4d6d; color: white; border: none; padding: 10px 20px; font-size: 1rem; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.2s; position: relative; z-index: 40; }
+        #noBtn { background-color: #adb5bd; color: white; border: none; padding: 8px 18px; font-size: 0.9rem; border-radius: 25px; cursor: pointer; transition: 0.1s; position: relative; z-index: 40; }
 
-        .reveal-box {
-            display: none; margin-top: 15px; padding: 10px;
-            background: rgba(255, 255, 255, 0.2); 
-            backdrop-filter: blur(5px);
-            border-radius: 10px; border: 1px dashed #ff4d6d;
-        }
+        .reveal-box { display: none; margin-top: 15px; padding: 10px; background: rgba(255, 255, 255, 0.3); border-radius: 10px; border: 1px dashed #ff4d6d; }
 
         .heart { position: absolute; color: #ff4d6d; animation: float 4s linear infinite; pointer-events: none; opacity: 0.6; }
-        @keyframes float { 0% { transform: translateY(110vh); opacity: 0.6; } 100% { transform: translateY(-10vh); opacity: 0; } }
+        @keyframes float { 0% { transform: translateY(110vh); } 100% { transform: translateY(-10vh); } }
     </style>
 </head>
 <body onclick="playMusic()">
 
-    <audio id="bgMusic" loop>
+    <audio id="bgMusic" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
@@ -99,12 +89,10 @@
     <div class="container" id="mainCard">
         <img src="img.jpg" alt="Us" class="photo-frame">
         <h1 id="question">Mannu, will you be my Valentine? 🌹</h1>
-
         <div class="buttons" id="btnContainer">
             <button id="yesBtn" onclick="celebrate()">Yes!</button>
             <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
         </div>
-
         <div id="revealSection" class="reveal-box">
             <h3 id="clickMe" style="color: #ff4d6d; cursor: pointer; text-decoration: underline; font-size: 1rem;">Click here 🎁</h3>
             <p id="surpriseText" style="display: none; color: #d63384; font-weight: bold; font-size: 0.9rem;">
@@ -114,12 +102,14 @@
     </div>
 
     <script>
+        const audio = document.getElementById('bgMusic');
         let musicStarted = false;
+
         function playMusic() {
-            const audio = document.getElementById('bgMusic');
             if (!musicStarted) {
-                audio.play();
-                musicStarted = true;
+                audio.play().then(() => {
+                    musicStarted = true;
+                }).catch(err => console.log("Audio waiting for interaction..."));
             }
         }
 
@@ -127,6 +117,40 @@
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
+            
+            // Fixed the No button logic to stay within viewport
             const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 50);
-            noBtn.style.position
+            
+            noBtn.style.position = "fixed";
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            if(yesScale < 3.5) {
+                yesScale += 0.2;
+                yesBtn.style.transform = `scale(${yesScale})`;
+            }
+        }
+
+        function celebrate() {
+            document.getElementById('question').innerHTML = "Yay! ❤️";
+            document.getElementById('btnContainer').style.display = "none";
+            document.getElementById('revealSection').style.display = "block";
+            document.getElementById('clickMe').onclick = function() {
+                this.style.display = 'none';
+                document.getElementById('surpriseText').style.display = 'block';
+                setTimeout(() => { alert("You're stuck with me now! I love you! ❤️"); }, 300);
+            };
+        }
+
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart'); heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }, 600);
+    </script>
+</body>
+</html>
