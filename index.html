@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Manvi ❤️</title>
+    <style>
+        body {
+            margin: 0; padding: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; min-height: 100vh;
+            background-color: #fff0f3; font-family: 'Segoe UI', sans-serif;
+            overflow: hidden; text-align: center;
+        }
+
+        .container {
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            padding: 25px; border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+            width: 80%; max-width: 350px;
+        }
+
+        .photo-frame {
+            width: 150px; height: 150px; border: 4px solid #ff4d6d;
+            border-radius: 50%; margin-bottom: 15px; object-fit: cover;
+        }
+
+        h1 { color: #ff4d6d; font-size: 1.4rem; margin-bottom: 20px; }
+
+        .buttons {
+            display: flex; gap: 15px; justify-content: center; align-items: center;
+            min-height: 150px;
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d; color: white; border: none;
+            padding: 12px 25px; font-size: 1rem; border-radius: 25px;
+            cursor: pointer; font-weight: bold; transition: 0.2s;
+        }
+
+        #noBtn {
+            background-color: #adb5bd; color: white; border: none;
+            padding: 10px 20px; font-size: 0.9rem; border-radius: 25px;
+            cursor: pointer; transition: 0.1s; position: relative;
+        }
+
+        .reveal-box {
+            display: none; margin-top: 20px; padding: 15px;
+            background: #ffe5ec; border-radius: 10px; border: 1px dashed #ff4d6d;
+        }
+
+        .heart { position: absolute; color: #ff4d6d; animation: float 4s linear infinite; pointer-events: none; }
+        @keyframes float { 0% { transform: translateY(110vh); opacity: 1; } 100% { transform: translateY(-10vh); opacity: 0; } }
+    </style>
+</head>
+<body onclick="playMusic()">
+
+    <div id="player" style="display:none"></div>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <div class="container" id="mainCard">
+        <img src="https://via.placeholder.com/150" alt="Us" class="photo-frame">
+        <h1 id="question">Manvi, will you be my Valentine? 🌹</h1>
+
+        <div class="buttons" id="btnContainer">
+            <button id="yesBtn" onclick="celebrate()">Yes!</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+        </div>
+
+        <div id="revealSection" class="reveal-box">
+            <p style="color: #d63384; font-weight: bold;">
+                "I promise to make every day feel like Valentine's Day. See you soon!"
+            </p>
+            <p style="font-size: 0.8rem; color: #666;">Check your WhatsApp for the rest 😉</p>
+        </div>
+    </div>
+
+    <script>
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0', width: '0',
+                videoId: 'GxldQ9GyXnE', // "Until I Found You"
+                events: { 'onReady': onPlayerReady }
+            });
+        }
+        function onPlayerReady(event) {
+            // Music is primed, will play on first click
+        }
+        function playMusic() {
+            if (player && player.playVideo) {
+                player.playVideo();
+            }
+        }
+
+        let yesScale = 1;
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.position = "fixed";
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+
+            if(yesScale < 4) {
+                yesScale += 0.3;
+                yesBtn.style.transform = `scale(${yesScale})`;
+            }
+        }
+
+        function celebrate() {
+            document.getElementById('question').innerHTML = "Yay! See you soon, Manvi! ❤️";
+            document.getElementById('btnContainer').style.display = "none";
+            document.getElementById('revealSection').style.display = "block";
+            
+            // Final alert surprise
+            setTimeout(() => {
+                alert("You're stuck with me now! I love you! ❤️");
+            }, 500);
+        }
+
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }, 600);
+    </script>
+</body>
+</html>
