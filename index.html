@@ -14,23 +14,13 @@
 
         /* Floating Polaroid Photos */
         .floating-photo {
-            position: absolute;
-            width: 80px;
-            height: 100px;
-            background: white;
-            padding: 5px 5px 15px 5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border: 1px solid #ddd;
-            z-index: 1;
-            pointer-events: none;
+            position: absolute; width: 80px; height: 100px; background: white;
+            padding: 5px 5px 15px 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border: 1px solid #ddd; z-index: 1; pointer-events: none;
             animation: moveAround 25s linear infinite;
         }
 
-        .floating-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .floating-photo img { width: 100%; height: 100%; object-fit: cover; }
 
         @keyframes moveAround {
             0% { transform: translate(0, 0) rotate(0deg); }
@@ -40,7 +30,7 @@
             100% { transform: translate(0, 0) rotate(0deg); }
         }
 
-        /* 10 Unique Positions to ensure all 10 photos appear */
+        /* 10 Unique Positions */
         .p1 { top: 5%; left: 5%; animation-duration: 22s; }
         .p2 { top: 15%; left: 45%; animation-duration: 28s; animation-delay: -2s; }
         .p3 { top: 5%; right: 5%; animation-duration: 24s; animation-delay: -5s; }
@@ -53,9 +43,15 @@
         .p10 { top: 60%; left: 15%; animation-duration: 31s; animation-delay: -8s; }
 
         .container {
-            z-index: 10; background: rgba(255, 255, 255, 0.10);
+            z-index: 10; 
+            /* SUPER LOW TRANSPARENCY + BLUR */
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            
             padding: 20px; border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
             width: 85%; max-width: 320px;
         }
 
@@ -64,28 +60,19 @@
             border-radius: 50%; margin-bottom: 10px; object-fit: cover;
         }
 
-        h1 { color: #ff4d6d; font-size: 1.3rem; margin-bottom: 15px; }
+        /* Added text shadow so Mannu can read the text clearly over photos */
+        h1 { color: #ff4d6d; font-size: 1.3rem; margin-bottom: 15px; text-shadow: 1px 1px 2px white; }
 
-        .buttons {
-            display: flex; gap: 10px; justify-content: center; align-items: center;
-            min-height: 120px;
-        }
+        .buttons { display: flex; gap: 10px; justify-content: center; align-items: center; min-height: 120px; }
 
-        #yesBtn {
-            background-color: #ff4d6d; color: white; border: none;
-            padding: 10px 20px; font-size: 1rem; border-radius: 25px;
-            cursor: pointer; font-weight: bold; transition: 0.2s;
-        }
-
-        #noBtn {
-            background-color: #adb5bd; color: white; border: none;
-            padding: 8px 18px; font-size: 0.9rem; border-radius: 25px;
-            cursor: pointer; transition: 0.1s; position: relative;
-        }
+        #yesBtn { background-color: #ff4d6d; color: white; border: none; padding: 10px 20px; font-size: 1rem; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        #noBtn { background-color: #adb5bd; color: white; border: none; padding: 8px 18px; font-size: 0.9rem; border-radius: 25px; cursor: pointer; transition: 0.1s; position: relative; }
 
         .reveal-box {
             display: none; margin-top: 15px; padding: 10px;
-            background: #ffe5ec; border-radius: 10px; border: 1px dashed #ff4d6d;
+            background: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(5px);
+            border-radius: 10px; border: 1px dashed #ff4d6d;
         }
 
         .heart { position: absolute; color: #ff4d6d; animation: float 4s linear infinite; pointer-events: none; opacity: 0.6; }
@@ -142,36 +129,4 @@
             const yesBtn = document.getElementById('yesBtn');
             const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 50);
-            noBtn.style.position = "fixed";
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
-
-            if(yesScale < 3.5) {
-                yesScale += 0.2;
-                yesBtn.style.transform = `scale(${yesScale})`;
-            }
-        }
-
-        function celebrate() {
-            document.getElementById('question').innerHTML = "Yay! ❤️";
-            document.getElementById('btnContainer').style.display = "none";
-            document.getElementById('revealSection').style.display = "block";
-            document.getElementById('clickMe').onclick = function() {
-                this.style.display = 'none';
-                document.getElementById('surpriseText').style.display = 'block';
-                setTimeout(() => { alert("You're stuck with me now! I love you! ❤️"); }, 300);
-            };
-        }
-
-        setInterval(() => {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 4000);
-        }, 600);
-    </script>
-</body>
-</html>
+            noBtn.style.position
