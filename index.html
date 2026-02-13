@@ -8,48 +8,82 @@
         body {
             margin: 0; padding: 0; display: flex; flex-direction: column;
             align-items: center; justify-content: center; min-height: 100vh;
-            font-family: 'Segoe UI', sans-serif; overflow: hidden; text-align: center;
-            background-color: #000; /* Darker base for better photo visibility */
+            background-color: #fff0f3; font-family: 'Segoe UI', sans-serif;
+            overflow: hidden; text-align: center;
         }
 
-        /* Background Slideshow Styling */
-        .bg-slideshow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; list-style: none; margin: 0; padding: 0;
+        /* Floating Polaroid Photos */
+        .floating-photo {
+            position: absolute;
+            width: 100px;
+            height: 120px;
+            background: white;
+            padding: 5px 5px 20px 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border: 1px solid #ddd;
+            z-index: 1;
+            pointer-events: none;
+            animation: moveAround 20s linear infinite;
         }
 
-        .bg-slideshow li {
-            position: absolute; width: 100%; height: 100%;
-            top: 0; left: 0; background-size: cover; background-position: center;
-            opacity: 0; transition: opacity 2s ease-in-out;
+        .floating-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .bg-slideshow li.active { opacity: 0.5; /* Keeps the photos subtle behind the card */ }
+        @keyframes moveAround {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(100px, 100px) rotate(10deg); }
+            50% { transform: translate(-50px, 200px) rotate(-10deg); }
+            75% { transform: translate(-150px, 50px) rotate(5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Adjust individual starting positions and speeds */
+        .p1 { top: 10%; left: 10%; animation-duration: 25s; }
+        .p2 { top: 70%; left: 15%; animation-duration: 30s; }
+        .p3 { top: 20%; right: 10%; animation-duration: 22s; }
+        .p4 { top: 65%; right: 15%; animation-duration: 28s; }
 
         .container {
-            z-index: 10; background: rgba(255, 255, 255, 0.9);
-            padding: 25px; border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            width: 80%; max-width: 350px;
+            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            padding: 20px; border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+            width: 85%; max-width: 320px; /* Slightly smaller for better BG visibility */
         }
 
         .photo-frame {
-            width: 150px; height: 150px; border: 4px solid #ff4d6d;
-            border-radius: 50%; margin-bottom: 15px; object-fit: cover;
+            width: 120px; height: 120px; border: 4px solid #ff4d6d;
+            border-radius: 50%; margin-bottom: 10px; object-fit: cover;
         }
 
-        h1 { color: #ff4d6d; font-size: 1.4rem; margin-bottom: 20px; }
+        h1 { color: #ff4d6d; font-size: 1.3rem; margin-bottom: 15px; }
 
-        .buttons { display: flex; gap: 15px; justify-content: center; align-items: center; min-height: 150px; }
+        .buttons {
+            display: flex; gap: 10px; justify-content: center; align-items: center;
+            min-height: 120px;
+        }
 
-        #yesBtn { background-color: #ff4d6d; color: white; border: none; padding: 12px 25px; font-size: 1rem; border-radius: 25px; cursor: pointer; font-weight: bold; transition: transform 0.2s; }
+        #yesBtn {
+            background-color: #ff4d6d; color: white; border: none;
+            padding: 10px 20px; font-size: 1rem; border-radius: 25px;
+            cursor: pointer; font-weight: bold; transition: 0.2s;
+        }
 
-        #noBtn { background-color: #adb5bd; color: white; border: none; padding: 10px 20px; font-size: 0.9rem; border-radius: 25px; cursor: pointer; transition: 0.1s; position: relative; }
+        #noBtn {
+            background-color: #adb5bd; color: white; border: none;
+            padding: 8px 18px; font-size: 0.9rem; border-radius: 25px;
+            cursor: pointer; transition: 0.1s; position: relative;
+        }
 
-        .reveal-box { display: none; margin-top: 20px; padding: 15px; background: #ffe5ec; border-radius: 10px; border: 1px dashed #ff4d6d; }
+        .reveal-box {
+            display: none; margin-top: 15px; padding: 10px;
+            background: #ffe5ec; border-radius: 10px; border: 1px dashed #ff4d6d;
+        }
 
-        .heart { position: absolute; color: #ff4d6d; animation: float 4s linear infinite; pointer-events: none; }
-        @keyframes float { 0% { transform: translateY(110vh); opacity: 1; } 100% { transform: translateY(-10vh); opacity: 0; } }
+        .heart { position: absolute; color: #ff4d6d; animation: float 4s linear infinite; pointer-events: none; opacity: 0.6; }
+        @keyframes float { 0% { transform: translateY(110vh); opacity: 0.6; } 100% { transform: translateY(-10vh); opacity: 0; } }
     </style>
 </head>
 <body onclick="playMusic()">
@@ -58,16 +92,14 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <ul class="bg-slideshow">
-        <li class="active" style="background-image: url('bg1.jpg');"></li>
-        <li style="background-image: url('bg2.jpg');"></li>
-        <li style="background-image: url('bg3.jpg');"></li>
-        <li style="background-image: url('bg4.jpg');"></li>
-    </ul>
+    <div class="floating-photo p1"><img src="bg1.jpg"></div>
+    <div class="floating-photo p2"><img src="bg2.jpg"></div>
+    <div class="floating-photo p3"><img src="bg3.jpg"></div>
+    <div class="floating-photo p4"><img src="img.jpg"></div>
 
     <div class="container" id="mainCard">
         <img src="img.jpg" alt="Us" class="photo-frame">
-        <h1 id="question">Mannu, will you be my Valentine? 🌹</h1>
+        <h1 id="question">Manvi, will you be my Valentine? 🌹</h1>
 
         <div class="buttons" id="btnContainer">
             <button id="yesBtn" onclick="celebrate()">Yes!</button>
@@ -75,34 +107,23 @@
         </div>
 
         <div id="revealSection" class="reveal-box">
-            <h3 id="clickMe" style="color: #ff4d6d; cursor: pointer; text-decoration: underline;">Click here! 🎁</h3>
-            <p id="surpriseText" style="display: none; color: #d63384; font-weight: bold;">
-                "I promise to make every day feel like Valentine's Day. See you soon, Batku! ❤️"
+            <h3 id="clickMe" style="color: #ff4d6d; cursor: pointer; text-decoration: underline; font-size: 1rem;">Click for your surprise! 🎁</h3>
+            <p id="surpriseText" style="display: none; color: #d63384; font-weight: bold; font-size: 0.9rem;">
+                "I promise to make every day feel like Valentine's Day. See you soon, Manvi! ❤️"
             </p>
         </div>
     </div>
 
     <script>
-        // 1. Music Logic
         let musicStarted = false;
         function playMusic() {
+            const audio = document.getElementById('bgMusic');
             if (!musicStarted) {
-                document.getElementById('bgMusic').play();
+                audio.play();
                 musicStarted = true;
             }
         }
 
-        // 2. Background Slideshow Logic
-        const slides = document.querySelectorAll('.bg-slideshow li');
-        let currentSlide = 0;
-        function nextSlide() {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
-        setInterval(nextSlide, 4000); // Changes background every 4 seconds
-
-        // 3. Button Logic
         let yesScale = 1;
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
@@ -112,8 +133,9 @@
             noBtn.style.position = "fixed";
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
+
             if(yesScale < 3.5) {
-                yesScale += 0.25;
+                yesScale += 0.2;
                 yesBtn.style.transform = `scale(${yesScale})`;
             }
         }
@@ -129,7 +151,6 @@
             };
         }
 
-        // 4. Heart Animation
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart');
