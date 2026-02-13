@@ -28,13 +28,15 @@
 
         .buttons {
             display: flex; gap: 15px; justify-content: center; align-items: center;
-            min-height: 150px;
+            min-height: 150px; /* Space for the "No" button to jump around */
         }
 
+        /* Fixed normal button sizing */
         #yesBtn {
             background-color: #ff4d6d; color: white; border: none;
             padding: 12px 25px; font-size: 1rem; border-radius: 25px;
-            cursor: pointer; font-weight: bold; transition: 0.2s;
+            cursor: pointer; font-weight: bold; transition: transform 0.2s;
+            min-width: 80px;
         }
 
         #noBtn {
@@ -54,8 +56,9 @@
 </head>
 <body onclick="playMusic()">
 
-    <div id="player" style="display:none"></div>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="container" id="mainCard">
         <img src="https://via.placeholder.com/150" alt="Us" class="photo-frame">
@@ -67,28 +70,21 @@
         </div>
 
         <div id="revealSection" class="reveal-box">
-            <p style="color: #d63384; font-weight: bold;">
-                "I promise to make every day feel like Valentine's Day. See you soon!"
+            <h3 id="clickMe" style="color: #ff4d6d; cursor: pointer; text-decoration: underline;">Click for your surprise! 🎁</h3>
+            <p id="surpriseText" style="display: none; color: #d63384; font-weight: bold;">
+                "I promise to make every day feel like Valentine's Day. See you soon, Manvi! ❤️"
             </p>
-            <p style="font-size: 0.8rem; color: #666;">Check your WhatsApp for the rest 😉</p>
         </div>
     </div>
 
     <script>
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('player', {
-                height: '0', width: '0',
-                videoId: 'GxldQ9GyXnE', // "Until I Found You"
-                events: { 'onReady': onPlayerReady }
-            });
-        }
-        function onPlayerReady(event) {
-            // Music is primed, will play on first click
-        }
+        // Start music on first click
+        let musicStarted = false;
         function playMusic() {
-            if (player && player.playVideo) {
-                player.playVideo();
+            const audio = document.getElementById('bgMusic');
+            if (!musicStarted) {
+                audio.play().catch(e => console.log("Audio play failed:", e));
+                musicStarted = true;
             }
         }
 
@@ -97,29 +93,38 @@
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
             
+            // Move No button to random spot
             const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 50);
             noBtn.style.position = "fixed";
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
 
-            if(yesScale < 4) {
-                yesScale += 0.3;
+            // Grow Yes button slightly each time
+            if(yesScale < 3.5) {
+                yesScale += 0.25;
                 yesBtn.style.transform = `scale(${yesScale})`;
             }
         }
 
         function celebrate() {
-            document.getElementById('question').innerHTML = "Yay! See you soon, Manvi! ❤️";
+            document.getElementById('question').innerHTML = "Yay! ❤️";
             document.getElementById('btnContainer').style.display = "none";
             document.getElementById('revealSection').style.display = "block";
-            
-            // Final alert surprise
-            setTimeout(() => {
-                alert("You're stuck with me now! I love you! ❤️");
-            }, 500);
+
+            // Click to reveal logic
+            document.getElementById('clickMe').onclick = function() {
+                this.style.display = 'none';
+                document.getElementById('surpriseText').style.display = 'block';
+                
+                // Final alert popup
+                setTimeout(() => {
+                    alert("You're stuck with me now! I love you! ❤️");
+                }, 300);
+            };
         }
 
+        // Heart animation
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart');
