@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Manvi ❤️</title>
+    <title>For Mannu ❤️</title>
     <style>
         body {
             margin: 0; padding: 0; display: flex; flex-direction: column;
@@ -15,15 +15,15 @@
         /* Floating Polaroid Photos */
         .floating-photo {
             position: absolute;
-            width: 100px;
-            height: 120px;
+            width: 80px;
+            height: 100px;
             background: white;
-            padding: 5px 5px 20px 5px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            padding: 5px 5px 15px 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             border: 1px solid #ddd;
             z-index: 1;
             pointer-events: none;
-            animation: moveAround 20s linear infinite;
+            animation: moveAround 25s linear infinite;
         }
 
         .floating-photo img {
@@ -34,23 +34,29 @@
 
         @keyframes moveAround {
             0% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(100px, 100px) rotate(10deg); }
-            50% { transform: translate(-50px, 200px) rotate(-10deg); }
-            75% { transform: translate(-150px, 50px) rotate(5deg); }
+            25% { transform: translate(40px, 40px) rotate(5deg); }
+            50% { transform: translate(-20px, 80px) rotate(-5deg); }
+            75% { transform: translate(-60px, 20px) rotate(3deg); }
             100% { transform: translate(0, 0) rotate(0deg); }
         }
 
-        /* Adjust individual starting positions and speeds */
-        .p1 { top: 10%; left: 10%; animation-duration: 25s; }
-        .p2 { top: 70%; left: 15%; animation-duration: 30s; }
-        .p3 { top: 20%; right: 10%; animation-duration: 22s; }
-        .p4 { top: 65%; right: 15%; animation-duration: 28s; }
+        /* 10 Unique Positions to ensure all 10 photos appear */
+        .p1 { top: 5%; left: 5%; animation-duration: 22s; }
+        .p2 { top: 15%; left: 45%; animation-duration: 28s; animation-delay: -2s; }
+        .p3 { top: 5%; right: 5%; animation-duration: 24s; animation-delay: -5s; }
+        .p4 { top: 35%; left: 2%; animation-duration: 30s; animation-delay: -7s; }
+        .p5 { top: 40%; right: 2%; animation-duration: 26s; animation-delay: -3s; }
+        .p6 { bottom: 25%; left: 5%; animation-duration: 32s; animation-delay: -10s; }
+        .p7 { bottom: 15%; right: 5%; animation-duration: 25s; animation-delay: -4s; }
+        .p8 { bottom: 5%; left: 35%; animation-duration: 29s; animation-delay: -6s; }
+        .p9 { bottom: 5%; right: 35%; animation-duration: 27s; animation-delay: -1s; }
+        .p10 { top: 60%; left: 15%; animation-duration: 31s; animation-delay: -8s; }
 
         .container {
             z-index: 10; background: rgba(255, 255, 255, 0.95);
             padding: 20px; border-radius: 20px; 
             box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
-            width: 85%; max-width: 320px; /* Slightly smaller for better BG visibility */
+            width: 85%; max-width: 320px;
         }
 
         .photo-frame {
@@ -96,12 +102,12 @@
     <div class="floating-photo p2"><img src="bg2.jpg"></div>
     <div class="floating-photo p3"><img src="bg3.jpg"></div>
     <div class="floating-photo p4"><img src="bg4.jpg"></div>
-    <div class="floating-photo p4"><img src="bg5.jpg"></div>
-    <div class="floating-photo p4"><img src="bg6.jpg"></div>
-    <div class="floating-photo p4"><img src="bg7.jpg"></div>
-    <div class="floating-photo p4"><img src="bg8.jpg"></div>
-    <div class="floating-photo p4"><img src="bg9.jpg"></div>
-    <div class="floating-photo p4"><img src="bg10.jpg"></div>
+    <div class="floating-photo p5"><img src="bg5.jpg"></div>
+    <div class="floating-photo p6"><img src="bg6.jpg"></div>
+    <div class="floating-photo p7"><img src="bg7.jpg"></div>
+    <div class="floating-photo p8"><img src="bg8.jpg"></div>
+    <div class="floating-photo p9"><img src="bg9.jpg"></div>
+    <div class="floating-photo p10"><img src="bg10.jpg"></div>
 
     <div class="container" id="mainCard">
         <img src="img.jpg" alt="Us" class="photo-frame">
