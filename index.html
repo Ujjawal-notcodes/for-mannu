@@ -28,10 +28,9 @@
 
         .buttons {
             display: flex; gap: 15px; justify-content: center; align-items: center;
-            min-height: 150px; /* Space for the "No" button to jump around */
+            min-height: 150px;
         }
 
-        /* Fixed normal button sizing */
         #yesBtn {
             background-color: #ff4d6d; color: white; border: none;
             padding: 12px 25px; font-size: 1rem; border-radius: 25px;
@@ -61,7 +60,7 @@
     </audio>
 
     <div class="container" id="mainCard">
-        <img src="https://via.placeholder.com/150" alt="Us" class="photo-frame">
+        <img src="img.jpg" alt="Manvi & Ujjawal" class="photo-frame">
         <h1 id="question">Manvi, will you be my Valentine? 🌹</h1>
 
         <div class="buttons" id="btnContainer">
@@ -78,12 +77,11 @@
     </div>
 
     <script>
-        // Start music on first click
         let musicStarted = false;
         function playMusic() {
             const audio = document.getElementById('bgMusic');
             if (!musicStarted) {
-                audio.play().catch(e => console.log("Audio play failed:", e));
+                audio.play();
                 musicStarted = true;
             }
         }
@@ -92,15 +90,12 @@
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
-            
-            // Move No button to random spot
             const x = Math.random() * (window.innerWidth - 100);
             const y = Math.random() * (window.innerHeight - 50);
             noBtn.style.position = "fixed";
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
 
-            // Grow Yes button slightly each time
             if(yesScale < 3.5) {
                 yesScale += 0.25;
                 yesBtn.style.transform = `scale(${yesScale})`;
@@ -112,19 +107,15 @@
             document.getElementById('btnContainer').style.display = "none";
             document.getElementById('revealSection').style.display = "block";
 
-            // Click to reveal logic
             document.getElementById('clickMe').onclick = function() {
                 this.style.display = 'none';
                 document.getElementById('surpriseText').style.display = 'block';
-                
-                // Final alert popup
                 setTimeout(() => {
                     alert("You're stuck with me now! I love you! ❤️");
                 }, 300);
             };
         }
 
-        // Heart animation
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart');
