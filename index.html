@@ -8,14 +8,28 @@
         body {
             margin: 0; padding: 0; display: flex; flex-direction: column;
             align-items: center; justify-content: center; min-height: 100vh;
-            background-color: #fff0f3; font-family: 'Segoe UI', sans-serif;
-            overflow: hidden; text-align: center;
+            font-family: 'Segoe UI', sans-serif; overflow: hidden; text-align: center;
+            background-color: #000; /* Darker base for better photo visibility */
         }
 
+        /* Background Slideshow Styling */
+        .bg-slideshow {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; list-style: none; margin: 0; padding: 0;
+        }
+
+        .bg-slideshow li {
+            position: absolute; width: 100%; height: 100%;
+            top: 0; left: 0; background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 2s ease-in-out;
+        }
+
+        .bg-slideshow li.active { opacity: 0.5; /* Keeps the photos subtle behind the card */ }
+
         .container {
-            z-index: 10; background: rgba(255, 255, 255, 0.95);
+            z-index: 10; background: rgba(255, 255, 255, 0.9);
             padding: 25px; border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             width: 80%; max-width: 350px;
         }
 
@@ -26,28 +40,13 @@
 
         h1 { color: #ff4d6d; font-size: 1.4rem; margin-bottom: 20px; }
 
-        .buttons {
-            display: flex; gap: 15px; justify-content: center; align-items: center;
-            min-height: 150px;
-        }
+        .buttons { display: flex; gap: 15px; justify-content: center; align-items: center; min-height: 150px; }
 
-        #yesBtn {
-            background-color: #ff4d6d; color: white; border: none;
-            padding: 12px 25px; font-size: 1rem; border-radius: 25px;
-            cursor: pointer; font-weight: bold; transition: transform 0.2s;
-            min-width: 80px;
-        }
+        #yesBtn { background-color: #ff4d6d; color: white; border: none; padding: 12px 25px; font-size: 1rem; border-radius: 25px; cursor: pointer; font-weight: bold; transition: transform 0.2s; }
 
-        #noBtn {
-            background-color: #adb5bd; color: white; border: none;
-            padding: 10px 20px; font-size: 0.9rem; border-radius: 25px;
-            cursor: pointer; transition: 0.1s; position: relative;
-        }
+        #noBtn { background-color: #adb5bd; color: white; border: none; padding: 10px 20px; font-size: 0.9rem; border-radius: 25px; cursor: pointer; transition: 0.1s; position: relative; }
 
-        .reveal-box {
-            display: none; margin-top: 20px; padding: 15px;
-            background: #ffe5ec; border-radius: 10px; border: 1px dashed #ff4d6d;
-        }
+        .reveal-box { display: none; margin-top: 20px; padding: 15px; background: #ffe5ec; border-radius: 10px; border: 1px dashed #ff4d6d; }
 
         .heart { position: absolute; color: #ff4d6d; animation: float 4s linear infinite; pointer-events: none; }
         @keyframes float { 0% { transform: translateY(110vh); opacity: 1; } 100% { transform: translateY(-10vh); opacity: 0; } }
@@ -59,9 +58,15 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
+    <ul class="bg-slideshow">
+        <li class="active" style="background-image: url('bg1.jpg');"></li>
+        <li style="background-image: url('bg2.jpg');"></li>
+        <li style="background-image: url('bg3.jpg');"></li>
+    </ul>
+
     <div class="container" id="mainCard">
-        <img src="img.jpg" alt="Manvi & Ujjawal" class="photo-frame">
-        <h1 id="question">Mannu baby, will you be my Valentine? 🌹</h1>
+        <img src="img.jpg" alt="Us" class="photo-frame">
+        <h1 id="question">Mannu, will you be my Valentine? 🌹</h1>
 
         <div class="buttons" id="btnContainer">
             <button id="yesBtn" onclick="celebrate()">Yes!</button>
@@ -77,15 +82,26 @@
     </div>
 
     <script>
+        // 1. Music Logic
         let musicStarted = false;
         function playMusic() {
-            const audio = document.getElementById('bgMusic');
             if (!musicStarted) {
-                audio.play();
+                document.getElementById('bgMusic').play();
                 musicStarted = true;
             }
         }
 
+        // 2. Background Slideshow Logic
+        const slides = document.querySelectorAll('.bg-slideshow li');
+        let currentSlide = 0;
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 4000); // Changes background every 4 seconds
+
+        // 3. Button Logic
         let yesScale = 1;
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
@@ -95,7 +111,6 @@
             noBtn.style.position = "fixed";
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
-
             if(yesScale < 3.5) {
                 yesScale += 0.25;
                 yesBtn.style.transform = `scale(${yesScale})`;
@@ -106,16 +121,14 @@
             document.getElementById('question').innerHTML = "Yay! ❤️";
             document.getElementById('btnContainer').style.display = "none";
             document.getElementById('revealSection').style.display = "block";
-
             document.getElementById('clickMe').onclick = function() {
                 this.style.display = 'none';
                 document.getElementById('surpriseText').style.display = 'block';
-                setTimeout(() => {
-                    alert("You're stuck with me now! I love you! ❤️");
-                }, 300);
+                setTimeout(() => { alert("You're stuck with me now! I love you! ❤️"); }, 300);
             };
         }
 
+        // 4. Heart Animation
         setInterval(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart');
